@@ -4,6 +4,7 @@ import requests
 from basicauth import encode
 from pprint import pprint
 import json
+import urllib3 
 
 
 class JenkinsInfo(object):
@@ -21,6 +22,10 @@ class JenkinsInfo(object):
         self.s = requests.Session()
         self.ssl_verify = ssl_verify
         self.defaultHeader['Authorization'] = encode(user, password)
+
+
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
     def get_folders(self, folder=None):
         folders = []

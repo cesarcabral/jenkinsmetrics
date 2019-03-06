@@ -3,7 +3,7 @@ from prometheus_client import start_http_server,Counter, Gauge
 from conf_example import JENKINS_URL, JENKINS_USER, JENKINS_PASSWORD
 from jenkins_metrics import JenkinsInfo
 import time
-from sys import exit
+from sys import exit 
 
 
 def main():
@@ -19,12 +19,10 @@ def main():
     for p in projects:
         prometheus_metrics[p] = {'status': Gauge("Jenkins_metrics_project_{0}".format(p.replace("-","_")),
         'Metrics by project', labelnames=["status"])}
-
-    while True:
-        print("\nEmitting metrics")
-        print("Updating Jenkins Metrics")
-        update_gauge(projects, jenkins, prometheus_metrics)
-        time.sleep(5)
+    
+    print("\nEmitting metrics")
+    print("Updating Jenkins Metrics")
+    update_gauge(projects, jenkins, prometheus_metrics)
 
 
 def update_gauge(projects, jenkins_info, g):
@@ -39,6 +37,8 @@ if __name__ == "__main__":
     try:
         start_http_server(8889)
         main()
+        while True:
+            time.sleep(5)
     except KeyboardInterrupt:
         print("[INFO] - PROCESS INTERRUPTED")
         exit(0)
